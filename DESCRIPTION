@@ -10,5 +10,6 @@ Depends:
     RCurl
 License: CC0
 LazyData: true
-Suggests: knitr
+Suggests: knitr,
+    testthat
 VignetteBuilder: knitr
