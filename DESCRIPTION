@@ -1,6 +1,6 @@
 Package: gameday
 Title: Let R tell you if your NHL team plays today
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: as.person(
     "Craig Jones <craig.e.jones@geog.ubc.com> [aut, cre]")
 Description: Query live.nhle.com to check if your NHL team is listed on
