@@ -9,18 +9,16 @@
 #' news on your favorite hockey webpage.
 #' Suffer no more! You can now ask R directly, without tempting yourself
 #' by firing up your web browser.
-#'
-#' @param team.name Defaults to "canucks"
-#' @return \code{TRUE} if \code{team.name} has an NHL game on \code{date},
-#' \code{FALSE} otherwise
+#' @param date Defaults to "Current date"
+#' @return \score of all games if games were played on the date
 #' @keywords misc
-#' @note case in \code{team.name} is ignored
+#' @note returns error if date does not follow yyyy-mm-dd format
 #' @export
 #' @examples
-#' gday()
-#' gday("canadiens")
-#' gday("Bruins")
-gday <- function(team.name="canucks", date = Sys.Date()) {
+#' scores()
+#' scores("2014-02-14")
+#' scores("2014-2-14")
+scores <- function(date = Sys.Date()){
 	internet_connection <- function() {
 		tryCatch({RCurl::getURL("www.google.com"); TRUE},
 						 error = function(err) FALSE)
@@ -32,8 +30,15 @@ gday <- function(team.name="canucks", date = Sys.Date()) {
 		else{return(FALSE)}
 	}
 	check_date(date)
-	url <- paste0("http://live.nhle.com/GameData/GCScoreboard/", date, ".jsonp")
-	grepl(team.name, getURL(url), ignore.case=TRUE)
+	url  <- paste0('http://live.nhle.com/GameData/GCScoreboard/',
+								 date, '.jsonp')
+	raw <- RCurl::getURL(url)
+	json <- gsub('([a-zA-Z_0-9\\.]*\\()|(\\);?$)', "", raw, perl = TRUE)
+	data <- jsonlite::fromJSON(json)$games
+	with(data,
+			 data.frame(home = paste(htn, htcommon),
+			 					 away = paste(atn, atcommon),
+			 					 home_score = hts,
+			 					 away_score = ats))
 }
-library(assertthat)
-library(RCurl)
+document()
