@@ -41,4 +41,4 @@ scores <- function(date = Sys.Date()){
 			 					 home_score = hts,
 			 					 away_score = ats))
 }
-document()
+
